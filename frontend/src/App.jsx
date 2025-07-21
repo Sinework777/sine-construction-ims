@@ -1,5 +1,5 @@
 import React from 'react';
-// import { AuthProvider, useAuth } from './context/AuthContext.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 // --- Credential seeding and debug logging ---
 function seedRoleCredentials() {
   const roles = [
@@ -113,8 +113,9 @@ function App() {
     seedRoleCredentials();
   }, []);
   return (
-    <DailyReportsProvider>
-      <Router>
+    <AuthProvider>
+      <DailyReportsProvider>
+        <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />
@@ -181,6 +182,7 @@ function App() {
         </Routes>
       </Router>
     </DailyReportsProvider>
+    </AuthProvider>
   );
 }
 
