@@ -1,0 +1,9 @@
+{
+  "pmName": "Abiy",
+  "project": "Tower A",
+  "notifications": ["Submittal #123 approved", "RFI #456 pending response", "NCR #789 requires action"],
+  "tasks": ["Review Daily Report", "Approve Submittal", "Schedule Meeting"],
+  "aiInsights": ["Potential delay in concrete pour due to weather", "Risk: Material delivery late"],
+  "projectHealth": "Good",
+  "weather": "Sunny 32°C"
+}

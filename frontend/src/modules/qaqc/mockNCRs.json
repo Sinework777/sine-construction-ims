@@ -1,0 +1,26 @@
+[
+  {
+    "ncrNo": "NCR-0001",
+    "category": "Workmanship",
+    "description": "Incorrect rebar placement in slab.",
+    "rootCause": "Lack of supervision",
+    "correctiveAction": "Rework and additional inspection",
+    "assignedTo": "QAQC Engineer",
+    "dateRaised": "2025-07-19",
+    "priority": "High",
+    "files": [],
+    "status": "Open"
+  },
+  {
+    "ncrNo": "NCR-0002",
+    "category": "Material",
+    "description": "Substandard concrete batch.",
+    "rootCause": "Supplier issue",
+    "correctiveAction": "Reject batch, notify supplier",
+    "assignedTo": "PM",
+    "dateRaised": "2025-07-18",
+    "priority": "Medium",
+    "files": [],
+    "status": "In Review"
+  }
+]
