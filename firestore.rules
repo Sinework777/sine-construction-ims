@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function: Fetch user doc (unchanged, but used less aggressively)
+    function getUserDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isSameTenant() {
+      return request.auth != null
+        && getUserDoc().tenantId == resource.data.tenantId;
+    }
+
+    function isElevatedRole() {
+      let role = getUserDoc().role;
+      return role in ["system_admin", "admin", "pm"];
+    }
+
+    // Consolidated and simplified /users rules: No doc fetch for create, fixed duplicates, consistent Super Admin check
+    match /users/{userId} {
+      // isSuperAdmin using custom claims for efficiency (set via Admin SDK); fallback to doc role
+      function isSuperAdmin() {
+        // Prefer custom claims if set (faster, no doc get)
+        let claims = request.auth.token;
+        if (claims.isSuperAdmin == true) {
+          return true;
+        }
+        // Fallback to doc role with lowercase check
+        let role = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+        return role != null && role.toLowerCase() in ['super admin', 'system_admin', 'system admin'];
+      }
+
+      // Allow any authenticated user to create their own profile (no doc fetch needed)
+      allow create: if request.auth != null && request.auth.uid == userId;
+
+      // Allow users to read/update their own; Super Admins full access
+      allow get, update, delete: if request.auth != null && (
+        request.auth.uid == userId || isSuperAdmin()
+      );
+
+      // Allow Super Admins to list/query all users (for dashboard)
+      allow list: if request.auth != null && isSuperAdmin();
+    }
+
+    // Removed redundant /users/{document=**} matches to avoid conflicts
+
+    // SYSTEM ADMIN: Full access fallback (moved after specifics for proper override)
+    match /{document=**} {
+      allow read, write: if request.auth != null && (
+        getUserDoc().role.toLowerCase() in ['system_admin', 'super admin']
+      );
+    }
+
+    // PROJECTS: Unchanged
+    match /projects/{projectId} {
+      allow read: if isSameTenant();
+      allow create, update, delete: if isSameTenant() && isElevatedRole();
+      match /{subcollection}/{docId} {
+        allow read: if isSameTenant();
+        allow create, update, delete: if isSameTenant() && isElevatedRole();
+      }
+    }
+
+    // MODULES: Unchanged
+    match /{moduleName}/{docId} {
+      allow read: if isSameTenant();
+      allow create, update, delete: if isSameTenant() && isElevatedRole();
+    }
+
+    // DEFAULT: Deny all (unchanged)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

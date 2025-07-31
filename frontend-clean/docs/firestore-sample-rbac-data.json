@@ -1,0 +1,93 @@
+{
+  "roles": [
+    {
+      "id": "superadmin",
+      "name": "Super Admin",
+      "description": "Full access to all modules and settings.",
+      "permissions": ["manage_automation", "manage_users", "view_reports", "manage_modules"]
+    },
+    {
+      "id": "pm",
+      "name": "Project Manager",
+      "description": "Manage assigned projects and reports.",
+      "permissions": ["view_reports", "edit_project", "manage_automation"]
+    },
+    {
+      "id": "qaqc",
+      "name": "QA/QC",
+      "description": "Quality assurance and control.",
+      "permissions": ["view_reports", "submit_qaqc"]
+    }
+  ],
+  "permissions": [
+    {
+      "id": "manage_automation",
+      "name": "Manage Automation",
+      "description": "Access and configure automation features.",
+      "module": "automation"
+    },
+    {
+      "id": "manage_users",
+      "name": "Manage Users",
+      "description": "Add, remove, and update users.",
+      "module": "admin"
+    },
+    {
+      "id": "view_reports",
+      "name": "View Reports",
+      "description": "View all project and system reports.",
+      "module": "dashboard"
+    },
+    {
+      "id": "edit_project",
+      "name": "Edit Project",
+      "description": "Edit project details and settings.",
+      "module": "projects"
+    },
+    {
+      "id": "manage_modules",
+      "name": "Manage Modules",
+      "description": "Enable or disable system modules.",
+      "module": "admin"
+    },
+    {
+      "id": "submit_qaqc",
+      "name": "Submit QA/QC",
+      "description": "Submit QA/QC reports.",
+      "module": "qaqc"
+    }
+  ],
+  "users": [
+    {
+      "uid": "superadmin-uid",
+      "email": "admin@company.com",
+      "displayName": "Admin User",
+      "roles": ["superadmin"],
+      "projectRoles": {},
+      "permissions": [],
+      "tenantId": "tenant1"
+    },
+    {
+      "uid": "pm-uid",
+      "email": "pm@company.com",
+      "displayName": "Project Manager",
+      "roles": ["pm"],
+      "projectRoles": {
+        "projectA": ["pm"]
+      },
+      "permissions": [],
+      "tenantId": "tenant1"
+    },
+    {
+      "uid": "qaqc-uid",
+      "email": "qaqc@company.com",
+      "displayName": "QAQC User",
+      "roles": ["qaqc"],
+      "projectRoles": {
+        "projectA": ["qaqc"]
+      },
+      "permissions": [],
+      "tenantId": "tenant1"
+    }
+  ]
+}

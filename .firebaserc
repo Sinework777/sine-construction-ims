@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "sine-cons-ims",
+    "prod": "sine-cons-ims"
+  },
+  "targets": {},
+  "etags": {}
+}
